@@ -4,6 +4,8 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Getter
@@ -18,5 +20,14 @@ public class Categoria implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String nome;
+    private String name;
+
+    @ManyToMany(mappedBy = "categorias")
+    private List<Produto> produtos = new ArrayList<>();
+    /* mappedBy é usado para definir que a entidade Categoria não é dominante na relação com Produto,
+         no nome que está inserido deve ser o mesmo na variável lá no Produtos */
+
+    public Categoria(String name) {
+        this.name = name;
+    }
 }
