@@ -6,11 +6,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.*;
 
 @Getter
 @Setter
@@ -30,5 +28,28 @@ public class Cliente implements Serializable {
 
     private String CpfOuCnpj;
 
-    private TipoCliente tipoCliente;
+    private Integer tipoCliente;
+
+    @OneToMany(mappedBy = "cliente")
+    private List<Endereco> enderecos = new ArrayList<>();
+
+    @ElementCollection
+    @CollectionTable(name = "TELEFONE")
+    private Set<String> telefones = new HashSet<>();
+
+    public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipoCliente) {
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
+        CpfOuCnpj = cpfOuCnpj;
+        this.tipoCliente = tipoCliente.getNumber();
+    }
+
+    public TipoCliente getTipoCliente() {
+        return TipoCliente.toEnum(tipoCliente);
+    }
+
+    public void setTipoCliente(TipoCliente tipoCliente) {
+        this.tipoCliente = tipoCliente.getNumber();
+    }
 }

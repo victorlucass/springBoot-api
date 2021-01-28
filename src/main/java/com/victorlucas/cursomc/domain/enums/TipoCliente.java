@@ -7,10 +7,10 @@ public enum TipoCliente {
     PESSOAFISICA (1, "Pessoa Física"),
     PESSOAJURIDICA (2, "Pessoa Jurídica");
 
-    private int number;
+    private Integer number;
     private String description;
 
-    private TipoCliente(int number, String description){
+    private TipoCliente(Integer number, String description){
         this.number = number;
         this.description = description;
     }
