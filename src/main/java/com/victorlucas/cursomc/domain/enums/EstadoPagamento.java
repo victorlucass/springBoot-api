@@ -1,7 +1,6 @@
 package com.victorlucas.cursomc.domain.enums;
 
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
 public enum EstadoPagamento {

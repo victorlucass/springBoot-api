@@ -2,7 +2,6 @@ package com.victorlucas.cursomc.domain.pagamentos;
 
 import com.victorlucas.cursomc.domain.Pedido;
 import com.victorlucas.cursomc.domain.enums.EstadoPagamento;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
