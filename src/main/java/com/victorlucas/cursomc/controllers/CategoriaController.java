@@ -1,6 +1,7 @@
 package com.victorlucas.cursomc.controllers;
 
 import com.victorlucas.cursomc.domain.Categoria;
+import com.victorlucas.cursomc.dto.CategoriaDTO;
 import com.victorlucas.cursomc.services.CategoriaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,9 +20,9 @@ public class CategoriaController {
     private CategoriaService service;
 
     @GetMapping
-    public ResponseEntity<List<Categoria>> findAll(){
-        List<Categoria>lista = service.findAll();
-        return ResponseEntity.ok().body(lista);
+    public ResponseEntity<List<CategoriaDTO>> findAll(){
+        List<CategoriaDTO> list = service.findAll();
+        return ResponseEntity.ok().body(list);
     }
 
     @GetMapping("/{id}")

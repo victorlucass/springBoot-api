@@ -1,6 +1,7 @@
 package com.victorlucas.cursomc.services;
 
 import com.victorlucas.cursomc.domain.Categoria;
+import com.victorlucas.cursomc.dto.CategoriaDTO;
 import com.victorlucas.cursomc.exceptions.DataIntegrityException;
 import com.victorlucas.cursomc.exceptions.ObjectNotFoundException;
 import com.victorlucas.cursomc.repositories.CategoriaRepository;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoriaService {
@@ -17,9 +19,10 @@ public class CategoriaService {
     @Autowired
     private CategoriaRepository repository;
 
-    public List<Categoria> findAll(){
-        List<Categoria> obj = repository.findAll();
-        return obj;
+    public List<CategoriaDTO> findAll(){
+        List<Categoria> lista = repository.findAll();
+        List<CategoriaDTO> listDTO = lista.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
+        return listDTO;
     }
 
     public Categoria findById(Integer id){
