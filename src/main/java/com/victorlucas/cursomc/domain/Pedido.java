@@ -27,7 +27,6 @@ public class Pedido implements Serializable {
     private Date instante;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
-    @JsonManagedReference
     private Pagamento pagamento;
 
     @ManyToOne
@@ -36,7 +35,6 @@ public class Pedido implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
-    @JsonManagedReference
     private Cliente cliente;
 
     @OneToMany(mappedBy = "id.pedido")

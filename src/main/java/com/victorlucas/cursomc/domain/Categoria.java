@@ -24,7 +24,6 @@ public class Categoria implements Serializable {
     private Integer id;
     private String name;
 
-    @JsonManagedReference
     @ManyToMany(mappedBy = "categorias")
     private List<Produto> produtos = new ArrayList<>();
     /* mappedBy é usado para definir que a entidade Categoria não é dominante na relação com Produto,
