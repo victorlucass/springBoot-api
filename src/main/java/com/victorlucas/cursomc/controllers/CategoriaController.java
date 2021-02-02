@@ -33,10 +33,17 @@ public class CategoriaController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Categoria> create(@RequestBody Categoria categoria){
-        Categoria obj = service.create(categoria);
+        Categoria obj = service.save(categoria);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).body(obj);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Categoria> update(@RequestBody Categoria categoria ,@PathVariable Integer id){
+        categoria.setId(id);
+        Categoria body = service.update(categoria);
+        return ResponseEntity.status(HttpStatus.OK).body(body);
     }
 
 }

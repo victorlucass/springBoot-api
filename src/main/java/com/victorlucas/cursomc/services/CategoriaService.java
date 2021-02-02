@@ -6,6 +6,7 @@ import com.victorlucas.cursomc.repositories.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,8 +29,13 @@ public class CategoriaService {
     //para user o findById ele precisa ser do tipo Optional<tipo>
     //Ao retorna ele precisa do orElse() esse cara vai realizar oq está dentro caso seja nulo.
 
-    public Categoria create(Categoria obj){
+    public Categoria save(Categoria obj){
         obj.setId(null);
         return repository.save(obj);
+    }
+
+
+    public Categoria update(Categoria categoria){
+        return repository.save(categoria);
     }
 }
