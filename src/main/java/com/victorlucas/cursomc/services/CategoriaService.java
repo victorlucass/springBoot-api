@@ -1,12 +1,13 @@
 package com.victorlucas.cursomc.services;
 
 import com.victorlucas.cursomc.domain.Categoria;
+import com.victorlucas.cursomc.exceptions.DataIntegrityException;
 import com.victorlucas.cursomc.exceptions.ObjectNotFoundException;
 import com.victorlucas.cursomc.repositories.CategoriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,5 +38,15 @@ public class CategoriaService {
 
     public Categoria update(Categoria categoria){
         return repository.save(categoria);
+    }
+
+    public void delete(Integer id) {
+        findById(id); //Vai verificar se tem id...
+        try{
+            repository.deleteById(id);
+
+        }catch (DataIntegrityViolationException e){
+            throw new DataIntegrityException("Não foi possível excluir uma categoria pois há produtos vinculados à ela.");
+        }
     }
 }
