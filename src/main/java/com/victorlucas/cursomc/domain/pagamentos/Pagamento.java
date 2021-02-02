@@ -1,5 +1,7 @@
 package com.victorlucas.cursomc.domain.pagamentos;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.victorlucas.cursomc.domain.Pedido;
 import com.victorlucas.cursomc.domain.enums.EstadoPagamento;
 import lombok.Getter;
@@ -25,6 +27,7 @@ public abstract class Pagamento implements Serializable {
     @OneToOne
     @JoinColumn(name = "pedido_id")
     @MapsId
+    @JsonBackReference
     private Pedido pedido;
 
     public Pagamento(Integer id, EstadoPagamento estadoPagamento, Pedido pedido) {

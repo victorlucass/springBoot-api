@@ -1,5 +1,8 @@
 package com.victorlucas.cursomc.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.victorlucas.cursomc.domain.itemPedido.ItemPedido;
 import com.victorlucas.cursomc.domain.pagamentos.Pagamento;
 import lombok.*;
@@ -20,9 +23,11 @@ public class Pedido implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @JsonFormat(pattern = "dd/MM/yyyy HH:mm")
     private Date instante;
 
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
+    @JsonManagedReference
     private Pagamento pagamento;
 
     @ManyToOne
@@ -31,6 +36,7 @@ public class Pedido implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "cliente_id")
+    @JsonManagedReference
     private Cliente cliente;
 
     @OneToMany(mappedBy = "id.pedido")
