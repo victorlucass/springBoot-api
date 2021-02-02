@@ -1,6 +1,5 @@
 package com.victorlucas.cursomc.domain;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.victorlucas.cursomc.domain.itemPedido.ItemPedido;
 import lombok.*;
@@ -24,8 +23,8 @@ public class Produto implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private String name;
-    private Double price;
+    private String nome;
+    private Double preco;
 
     @JsonIgnore
     @ManyToMany
@@ -36,9 +35,9 @@ public class Produto implements Serializable {
     @OneToMany(mappedBy = "id.produto")
     private Set<ItemPedido> itens = new HashSet<>();
 
-    public Produto(String name, Double price) {
-        this.name = name;
-        this.price = price;
+    public Produto(String nome, Double preco) {
+        this.nome = nome;
+        this.preco = preco;
     }
 
     @JsonIgnore
