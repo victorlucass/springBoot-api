@@ -1,5 +1,6 @@
 package com.victorlucas.cursomc.controllers;
 
+import javax.validation.Valid;
 import com.victorlucas.cursomc.domain.Categoria;
 import com.victorlucas.cursomc.dto.CategoriaDTO;
 import com.victorlucas.cursomc.services.CategoriaService;
@@ -49,8 +50,9 @@ public class CategoriaController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public ResponseEntity<Categoria> create(@RequestBody Categoria categoria){
-        Categoria obj = service.save(categoria);
+    public ResponseEntity<Categoria> insert(@RequestBody @Valid CategoriaDTO objDto) {
+        Categoria obj = service.fromDTO(objDto);
+        obj = service.save(obj);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).body(obj);
@@ -59,7 +61,8 @@ public class CategoriaController {
     /*PUT*/
 
     @PutMapping("/{id}")
-    public ResponseEntity<Categoria> update(@RequestBody Categoria categoria ,@PathVariable Integer id){
+    public ResponseEntity<Categoria> update(@Valid @RequestBody CategoriaDTO categoriaDTO ,@PathVariable Integer id){
+        Categoria categoria = service.fromDTO(categoriaDTO);
         categoria.setId(id);
         Categoria body = service.update(categoria);
         return ResponseEntity.status(HttpStatus.OK).body(body);
