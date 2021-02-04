@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.victorlucas.cursomc.domain.enums.TipoCliente;
+import com.victorlucas.cursomc.dto.ClienteDTO;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -50,6 +51,12 @@ public class Cliente implements Serializable {
         this.email = email;
         CpfOuCnpj = cpfOuCnpj;
         this.tipoCliente = tipoCliente.getNumber();
+    }
+
+    public Cliente(Integer id, String nome, String email){
+        this.id = id;
+        this.nome = nome;
+        this.email = email;
     }
 
     public TipoCliente getTipoCliente() {

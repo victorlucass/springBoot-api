@@ -3,6 +3,7 @@ package com.victorlucas.cursomc.exceptions.handlers;
 import com.victorlucas.cursomc.exceptions.DataIntegrityException;
 import com.victorlucas.cursomc.exceptions.ObjectNotFoundException;
 import com.victorlucas.cursomc.exceptions.handlers.auxiliar.StandardError;
+import com.victorlucas.cursomc.exceptions.handlers.auxiliar.ValidationError;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;

@@ -1,4 +1,4 @@
-package com.victorlucas.cursomc.exceptions.handlers;
+package com.victorlucas.cursomc.exceptions.handlers.auxiliar;
 
 import com.victorlucas.cursomc.exceptions.handlers.auxiliar.FieldMessage;
 import com.victorlucas.cursomc.exceptions.handlers.auxiliar.StandardError;
