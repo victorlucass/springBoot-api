@@ -49,10 +49,8 @@ public class CategoriaController {
     /*POST*/
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<Categoria> insert(@RequestBody @Valid CategoriaDTO objDto) {
-        Categoria obj = service.fromDTO(objDto);
-        obj = service.save(obj);
+        Categoria obj = service.save(objDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(obj.getId()).toUri();
         return ResponseEntity.created(uri).body(obj);
@@ -62,10 +60,8 @@ public class CategoriaController {
 
     @PutMapping("/{id}")
     public ResponseEntity<Categoria> update(@Valid @RequestBody CategoriaDTO categoriaDTO ,@PathVariable Integer id){
-        Categoria categoria = service.fromDTO(categoriaDTO);
-        categoria.setId(id);
-        Categoria body = service.update(categoria);
-        return ResponseEntity.status(HttpStatus.OK).body(body);
+       Categoria obj = service.update(id, categoriaDTO);
+       return ResponseEntity.status(HttpStatus.OK).body(obj);
     }
 
     /*DELETE*/

@@ -22,6 +22,8 @@ public class CategoriaService {
     @Autowired
     private CategoriaRepository repository;
 
+    /*GET*/
+
     public List<CategoriaDTO> findAll(){
         List<Categoria> lista = repository.findAll();
         List<CategoriaDTO> listDTO = lista.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
@@ -36,15 +38,30 @@ public class CategoriaService {
     //para user o findById ele precisa ser do tipo Optional<tipo>
     //Ao retorna ele precisa do orElse() esse cara vai realizar oq está dentro caso seja nulo.
 
-    public Categoria save(Categoria obj){
-        obj.setId(null);
+    public Page<Categoria> findPage(Integer page, Integer linesPerPage, String direction, String orderBy){
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
+        return repository.findAll(pageRequest);
+    }
+
+    /*POST*/
+
+    public Categoria save(CategoriaDTO dto){
+        Categoria categoria = new Categoria(null,dto.getNome());
+        Categoria body = repository.save(categoria);
+        return body;
+    }
+
+    /*PUT*/
+
+
+    public Categoria update(Integer id, CategoriaDTO categoriaDTO){
+        Categoria obj = findById(id);
+        put(categoriaDTO, obj);
+        obj.setId(id);
         return repository.save(obj);
     }
 
-
-    public Categoria update(Categoria categoria){
-        return repository.save(categoria);
-    }
+    /*DELETE*/
 
     public void delete(Integer id) {
         findById(id); //Vai verificar se tem id...
@@ -56,12 +73,10 @@ public class CategoriaService {
         }
     }
 
-    public Page<Categoria> findPage(Integer page, Integer linesPerPage, String direction, String orderBy){
-        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
-        return repository.findAll(pageRequest);
-    }
+    /*Auxiliar*/
 
-    public Categoria fromDTO(CategoriaDTO dto){
-        return new Categoria(dto.getNome());
+    private Categoria put(CategoriaDTO dto, Categoria categoria){
+        categoria.setNome(dto.getNome());
+        return categoria;
     }
 }
