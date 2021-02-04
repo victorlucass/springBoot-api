@@ -1,13 +1,11 @@
-package com.victorlucas.cursomc.handlers;
+package com.victorlucas.cursomc.exceptions.handlers.auxiliar;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.time.LocalTime;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -19,6 +17,5 @@ public class StandardError implements Serializable {
     private Integer status;
     private String msg;
 
-    @JsonFormat(pattern = "HH:mm")
-    private LocalTime timeStamp;
+    private Long timeStamp;
 }
