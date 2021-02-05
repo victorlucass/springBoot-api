@@ -34,7 +34,7 @@ public class Cliente implements Serializable {
 
     private Integer tipoCliente;
 
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL) //CascadeType.ALL é para forçar a exclusão do endereço junto com o cliente quando chamado método.
     private List<Endereco> enderecos = new ArrayList<>();
 
     @ElementCollection
