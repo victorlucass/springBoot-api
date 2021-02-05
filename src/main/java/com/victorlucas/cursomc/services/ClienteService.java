@@ -1,18 +1,23 @@
 package com.victorlucas.cursomc.services;
 
+import com.victorlucas.cursomc.domain.Cidade;
 import com.victorlucas.cursomc.domain.Cliente;
+import com.victorlucas.cursomc.domain.Endereco;
+import com.victorlucas.cursomc.domain.enums.TipoCliente;
 import com.victorlucas.cursomc.dto.ClienteDTO;
+import com.victorlucas.cursomc.dto.ClienteNewDTO;
 import com.victorlucas.cursomc.exceptions.DataIntegrityException;
 import com.victorlucas.cursomc.exceptions.ObjectNotFoundException;
 import com.victorlucas.cursomc.repositories.ClienteRepository;
+import com.victorlucas.cursomc.repositories.EnderecoRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,6 +26,9 @@ public class ClienteService {
 
     @Autowired
     private ClienteRepository clienteRepository;
+
+    @Autowired
+    private EnderecoRepository enderecoRepository;
 
     /*GET*/
     public List<Cliente> findAll(){
@@ -40,8 +48,10 @@ public class ClienteService {
     }
 
     /*POST*/
-    public Cliente save(Cliente cliente){
-        cliente.setId(null);
+    @Transactional
+    public Cliente save(ClienteNewDTO dto){
+        Cliente cliente = fromCliente(dto);
+        enderecoRepository.saveAll(cliente.getEnderecos());
         return clienteRepository.save(cliente);
     }
 
@@ -49,7 +59,6 @@ public class ClienteService {
     public Cliente update(Integer id, ClienteDTO dto){
         Cliente obj = findById(id); //Pega o obj no banco e faz a validação.
         fromCliente(dto, obj); // Transformando DTO em Cliente.
-        obj.setId(id); // Seta o id para fazer o update
         return clienteRepository.save(obj); //Salva no banco
     }
 
@@ -64,10 +73,26 @@ public class ClienteService {
     }
 
     /*AUXILIAR*/
-    public Cliente fromCliente(ClienteDTO dto, Cliente cliente){
-        cliente.setId(dto.getId());
+    private Cliente fromCliente(ClienteDTO dto, Cliente cliente){
         cliente.setNome(dto.getNome());
         cliente.setEmail(dto.getEmail());
+        return cliente;
+    }
+    public Cliente fromCliente(ClienteNewDTO dto){
+        Cliente cliente = new Cliente(null, dto.getNome(), dto.getEmail(), dto.getCpfOuCnpj(), TipoCliente.toEnum(dto.getTipoCliente()));
+        Cidade cidade = new Cidade(dto.getCidadeId(), null, null);
+        Endereco endereco = new Endereco(null, dto.getLogradouro(), dto.getNumero(), dto.getComplemento(), dto.getBairro(), dto.getCep(), cliente, cidade);
+
+        cliente.getEnderecos().add(endereco);
+        cliente.getTelefones().add(dto.getTelefone1());
+
+        if (dto.getTelefone2() != null){
+            cliente.getTelefones().add(dto.getTelefone2());
+        }
+        if (dto.getTelefone3() != null){
+            cliente.getTelefones().add(dto.getTelefone3());
+        }
+
         return cliente;
     }
 }

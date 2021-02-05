@@ -2,6 +2,7 @@ package com.victorlucas.cursomc.controllers;
 
 import com.victorlucas.cursomc.domain.Cliente;
 import com.victorlucas.cursomc.dto.ClienteDTO;
+import com.victorlucas.cursomc.dto.ClienteNewDTO;
 import com.victorlucas.cursomc.services.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -50,10 +51,9 @@ public class ClienteController {
 
     /*POST*/
     @PostMapping
-    public ResponseEntity<Cliente> save(@RequestBody @Valid Cliente cliente){
-        Cliente body = clienteService.save(cliente);
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(body.getId()).toUri();
-        return ResponseEntity.created(uri).body(body);
+    public ResponseEntity<Cliente> save(@RequestBody @Valid ClienteNewDTO dto){
+        Cliente body = clienteService.save(dto);
+        return ResponseEntity.ok().body(body);
     }
 
     /*PUT*/
