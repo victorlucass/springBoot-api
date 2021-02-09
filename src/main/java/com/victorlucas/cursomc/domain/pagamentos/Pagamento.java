@@ -1,8 +1,6 @@
 package com.victorlucas.cursomc.domain.pagamentos;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.victorlucas.cursomc.domain.Pedido;
 import com.victorlucas.cursomc.domain.enums.EstadoPagamento;
 import lombok.Getter;
@@ -17,6 +15,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type") //Esse código fala que minha classe Pagamento haverá um campo adicional o "@type"
 public abstract class Pagamento implements Serializable {
     public static final long serialVersionUID = 1L;
 
