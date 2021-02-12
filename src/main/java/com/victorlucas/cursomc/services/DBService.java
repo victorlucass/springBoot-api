@@ -142,7 +142,7 @@ public class DBService {
 
         p1.getItens().addAll(Arrays.asList(ip1));
         p2.getItens().addAll(Arrays.asList(ip3));
-        p3.getItens().addAll(Arrays.asList(ip2));
+        p3.getItens().addAll(Arrays.asList(ip2) );
 
         /*Repositórios*/
         categoriaRepository.saveAll(Arrays.asList(cat1,cat2,cat3,cat4,cat5,cat6,cat7));
