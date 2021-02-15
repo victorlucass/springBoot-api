@@ -105,7 +105,7 @@ public class DBService {
         Cidade c3 = new Cidade(null,"Campinas",est2);
 
         /*Cliente*/
-        Cliente cli1 = new Cliente(null, "Maria Silva","maria@gmail.com","36378912377", TipoCliente.PESSOAFISICA);
+        Cliente cli1 = new Cliente(null, "Victor Lucas","victorlucas.ao02@gmail.com","03172859207", TipoCliente.PESSOAFISICA);
 
         est1.getCidades().addAll(Arrays.asList(c1));
         est2.getCidades().addAll(Arrays.asList(c2,c3));
