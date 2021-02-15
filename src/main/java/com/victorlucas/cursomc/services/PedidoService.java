@@ -8,6 +8,7 @@ import com.victorlucas.cursomc.exceptions.ObjectNotFoundException;
 import com.victorlucas.cursomc.repositories.ItemPedidoRepository;
 import com.victorlucas.cursomc.repositories.PagamentoRepository;
 import com.victorlucas.cursomc.repositories.PedidoRepository;
+import com.victorlucas.cursomc.services.email.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +33,9 @@ public class PedidoService {
 
     @Autowired
     private ClienteService clienteService;
+
+    @Autowired
+    private EmailService emailService;
 
     @Autowired
     private ItemPedidoRepository itemPedidoRepository;
@@ -64,7 +68,7 @@ public class PedidoService {
             ip.setPedido(pedido);
         }
         itemPedidoRepository.saveAll(pedido.getItens());
-        System.out.println(pedido);
+        emailService.sendOrderConfirmationEmail(pedido);
         return pedido;
     }
 }
