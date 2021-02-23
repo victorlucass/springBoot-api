@@ -2,6 +2,7 @@ package com.victorlucas.cursomc.services;
 
 import com.victorlucas.cursomc.domain.*;
 import com.victorlucas.cursomc.domain.enums.EstadoPagamento;
+import com.victorlucas.cursomc.domain.enums.Perfil;
 import com.victorlucas.cursomc.domain.enums.TipoCliente;
 import com.victorlucas.cursomc.domain.itemPedido.ItemPedido;
 import com.victorlucas.cursomc.domain.pagamentos.Pagamento;
@@ -109,19 +110,33 @@ public class DBService {
         Cidade c3 = new Cidade(null,"Campinas",est2);
 
         /*Cliente*/
-        Cliente cli1 = new Cliente(null, "Victor Lucas","victorlucas.ao02@gmail.com","03172859207",
+        Cliente cli1 = new Cliente(null,
+                "Victor Lucas",
+                "victorlucas.ao02@gmail.com",
+                "03172859207",
                 TipoCliente.PESSOAFISICA,
                 bCryptPasswordEncoder.encode("123")); //Senha vai pro banco já encodada.
+        cli1.getTelefones().addAll(Arrays.asList("27363323","93838393"));
+
+        Cliente cli2 = new Cliente(null,
+                "Evandro Junior",
+                "admin@center92.com",
+                "64257293000170",
+                TipoCliente.PESSOAFISICA,
+                bCryptPasswordEncoder.encode("123"));
+        cli2.getTelefones().addAll(Arrays.asList("12863323","98838393"));
+        cli2.addPerfil(Perfil.ADMIN);
 
         est1.getCidades().addAll(Arrays.asList(c1));
         est2.getCidades().addAll(Arrays.asList(c2,c3));
-        cli1.getTelefones().addAll(Arrays.asList("27363323","93838393"));
 
         /*Endereço*/
         Endereco e1 = new Endereco(null, "Rua Flores","300","Apto 203","Jardim","38220834",cli1,c1);
         Endereco e2 = new Endereco(null, "Avenida Matos","150","Sala 800","Centro","38777012",cli1,c2);
+        Endereco e3 = new Endereco(null, "Avenida Brasil","24","próximo à parada de ônibus","Centro","38977012",cli2,c2);
 
         cli1.getEnderecos().addAll(Arrays.asList(e1,e2));
+        cli2.getEnderecos().addAll(Arrays.asList(e3));
 
         /*Pedido*/
 
@@ -155,8 +170,8 @@ public class DBService {
         produtoRepository.saveAll(Arrays.asList(p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11));
         estadoRepository.saveAll(Arrays.asList(est1,est2));
         cidadeRepository.saveAll(Arrays.asList(c1,c2,c3));
-        clienteRepository.saveAll(Arrays.asList(cli1));
-        enderecoRepository.saveAll(Arrays.asList(e1,e2));
+        clienteRepository.saveAll(Arrays.asList(cli1, cli2));
+        enderecoRepository.saveAll(Arrays.asList(e1,e2, e3));
         pedidoRepository.saveAll(Arrays.asList(ped1,ped2));
         pagamentoRepository.saveAll(Arrays.asList(pagto1,pagto2));
         itemPedidoRepository.saveAll(Arrays.asList(ip1,ip2,ip3));

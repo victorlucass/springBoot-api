@@ -3,6 +3,7 @@ package com.victorlucas.cursomc.domain;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.victorlucas.cursomc.domain.enums.Perfil;
 import com.victorlucas.cursomc.domain.enums.TipoCliente;
 import com.victorlucas.cursomc.dto.ClienteDTO;
 import lombok.EqualsAndHashCode;
@@ -13,10 +14,10 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @EqualsAndHashCode
 @Entity
 public class Cliente implements Serializable {
@@ -44,9 +45,17 @@ public class Cliente implements Serializable {
     @CollectionTable(name = "TELEFONE")
     private Set<String> telefones = new HashSet<>();
 
+    @ElementCollection(fetch = FetchType.EAGER)//O EAGER garante que quando for buscado os clientes, ele vai trazer tbm os PERFIS. Ou seja, seram buscados juntos.
+    @CollectionTable(name = "PERFIS")
+    private Set<Integer> perfis = new HashSet<>();
+
     @OneToMany(mappedBy = "cliente")
     @JsonIgnore
     private List<Pedido> pedidos = new ArrayList<>();
+
+    public Cliente() {
+        addPerfil(Perfil.CLIENTE);
+    }
 
     public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipoCliente, String senha) {
         this.id = id;
@@ -55,6 +64,7 @@ public class Cliente implements Serializable {
         CpfOuCnpj = cpfOuCnpj;
         this.tipoCliente = (tipoCliente == null) ? null : tipoCliente.getNumber();
         this.senha = senha;
+        addPerfil(Perfil.CLIENTE);
     }
 
     public Cliente(Integer id, String nome, String email){
@@ -69,5 +79,13 @@ public class Cliente implements Serializable {
 
     public void setTipoCliente(TipoCliente tipoCliente) {
         this.tipoCliente = tipoCliente.getNumber();
+    }
+
+    public Set<Perfil> getPerfis(){
+        return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+    }
+
+    public void addPerfil(Perfil perfil){
+        perfis.add(perfil.getNumber());
     }
 }
