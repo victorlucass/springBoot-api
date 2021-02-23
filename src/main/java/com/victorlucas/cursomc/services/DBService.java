@@ -9,6 +9,7 @@ import com.victorlucas.cursomc.domain.pagamentos.PagamentoComBoleto;
 import com.victorlucas.cursomc.domain.pagamentos.PagamentoComCartao;
 import com.victorlucas.cursomc.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.text.ParseException;
@@ -44,6 +45,9 @@ public class DBService {
 
     @Autowired
     private ItemPedidoRepository itemPedidoRepository;
+
+    @Autowired
+    private BCryptPasswordEncoder bCryptPasswordEncoder;
 
     public void instantiateTestDatabase() throws ParseException {
         /*Categorias*/
@@ -105,7 +109,9 @@ public class DBService {
         Cidade c3 = new Cidade(null,"Campinas",est2);
 
         /*Cliente*/
-        Cliente cli1 = new Cliente(null, "Victor Lucas","victorlucas.ao02@gmail.com","03172859207", TipoCliente.PESSOAFISICA);
+        Cliente cli1 = new Cliente(null, "Victor Lucas","victorlucas.ao02@gmail.com","03172859207",
+                TipoCliente.PESSOAFISICA,
+                bCryptPasswordEncoder.encode("123")); //Senha vai pro banco já encodada.
 
         est1.getCidades().addAll(Arrays.asList(c1));
         est2.getCidades().addAll(Arrays.asList(c2,c3));

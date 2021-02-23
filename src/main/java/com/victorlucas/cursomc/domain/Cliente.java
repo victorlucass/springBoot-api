@@ -34,6 +34,9 @@ public class Cliente implements Serializable {
 
     private Integer tipoCliente;
 
+    @JsonIgnore
+    private String senha;
+
     @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL) //CascadeType.ALL é para forçar a exclusão do endereço junto com o cliente quando chamado método.
     private List<Endereco> enderecos = new ArrayList<>();
 
@@ -45,12 +48,13 @@ public class Cliente implements Serializable {
     @JsonIgnore
     private List<Pedido> pedidos = new ArrayList<>();
 
-    public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipoCliente) {
+    public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipoCliente, String senha) {
         this.id = id;
         this.nome = nome;
         this.email = email;
         CpfOuCnpj = cpfOuCnpj;
         this.tipoCliente = (tipoCliente == null) ? null : tipoCliente.getNumber();
+        this.senha = senha;
     }
 
     public Cliente(Integer id, String nome, String email){
