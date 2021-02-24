@@ -1,6 +1,9 @@
 package com.victorlucas.cursomc.config;
 
+import com.victorlucas.cursomc.security.JWTAuthenticationFilter;
+import com.victorlucas.cursomc.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.env.Environment;
@@ -25,8 +28,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private Environment environment;
 
+    @Qualifier("userDetailsServiceImpl")
     @Autowired
     private UserDetailsService userDetailsService; //O Spring vai identificar o UserDetailsServiceImpl automaticamente...
+
+    @Autowired
+    private JWTUtil jwtUtil;
 
     private static final String[] PUBLIC_MATCHERS = {
             "/h2-console/**",
@@ -62,6 +69,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // Chama o authorizeRequests, depois chama antMatchers para pegar a lista de vetor,
         // e chama permitAll para todos os caminhos que tiverem na lista de rotas serem liberadas.
         // .anyRequest().authenticated(), ou seja, "para todo o resto, exigir"
+
+        http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         //Para segurar que nosso backend não vai criar sessão de usuário, usando o STATELESS.
