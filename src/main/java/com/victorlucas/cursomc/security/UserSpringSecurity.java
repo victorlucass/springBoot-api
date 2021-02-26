@@ -70,6 +70,7 @@ public class UserSpringSecurity implements UserDetails {
         this.id = id;
         this.email = email;
         this.senha = senha;
-        this.authorities = perfils.stream().map(x -> new SimpleGrantedAuthority(x.getDescription())).collect(Collectors.toSet()); //Transforma o perfil em Collection<? extends GrantedAuthority>
+        this.authorities = perfils.stream().map(x -> new SimpleGrantedAuthority(x.getDescription())).collect(Collectors.toSet());
+         //Transforma o perfil em Collection<? extends GrantedAuthority>
     }
 }

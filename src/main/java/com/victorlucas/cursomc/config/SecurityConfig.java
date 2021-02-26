@@ -1,6 +1,7 @@
 package com.victorlucas.cursomc.config;
 
 import com.victorlucas.cursomc.security.JWTAuthenticationFilter;
+import com.victorlucas.cursomc.security.JWTAuthorizationFilter;
 import com.victorlucas.cursomc.security.JWTUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -28,7 +29,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private Environment environment;
 
-    @Qualifier("userDetailsServiceImpl")
     @Autowired
     private UserDetailsService userDetailsService; //O Spring vai identificar o UserDetailsServiceImpl automaticamente...
 
@@ -53,9 +53,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         if (Arrays.asList(environment.getActiveProfiles()).contains("test")){
             http.headers().frameOptions().disable();
-        }
-
-        //Esse cara é para liberar acesso ao h2
+        }//Esse cara é para liberar acesso ao h2
 
         http.cors().and().csrf().disable();
         //cors(), o spring vai pegar como base o métodos corsConfigurationSource feito lá em baixo.
@@ -64,13 +62,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll() //apenas o método GET
                 .antMatchers(PUBLIC_MATCHERS).permitAll()
-                .anyRequest()
-                .authenticated();
+                .anyRequest().authenticated();
         // Chama o authorizeRequests, depois chama antMatchers para pegar a lista de vetor,
         // e chama permitAll para todos os caminhos que tiverem na lista de rotas serem liberadas.
         // .anyRequest().authenticated(), ou seja, "para todo o resto, exigir"
-
         http.addFilter(new JWTAuthenticationFilter(authenticationManager(), jwtUtil));
+        http.addFilter(new JWTAuthorizationFilter(authenticationManager(), jwtUtil, userDetailsService));
 
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         //Para segurar que nosso backend não vai criar sessão de usuário, usando o STATELESS.
