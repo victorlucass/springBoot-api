@@ -1,7 +1,6 @@
 package com.victorlucas.cursomc.security;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.victorlucas.cursomc.dto.CredenciaisDTO;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -21,7 +20,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
     private AuthenticationManager authenticationManager;
 
-    @Autowired
     private JWTUtil jwtUtil;
 
     public JWTAuthenticationFilter(AuthenticationManager authenticationManager, JWTUtil jwtUtil){
@@ -41,8 +39,8 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
             UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(creds.getEmail(), creds.getSenha(),
                     new ArrayList<>()/*Precisa passar uma lista vazia*/);
             //Após pegar oq tá vindo da requisição e converter pra um objeto, injeta o objeto na instância de UsernamePasswordAuthenticationToken
-
-            return authenticationManager.authenticate(authToken); //Esse é o cara que vai validar se o login e senha são válidos com base nos UserDatails/Service
+            Authentication auth = authenticationManager.authenticate(authToken);
+            return auth; //Esse é o cara que vai validar se o login e senha são válidos com base nos UserDatails/Service
 
         }catch (IOException ex){
             throw new RuntimeException(ex);
