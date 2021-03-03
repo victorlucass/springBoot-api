@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -47,9 +48,9 @@ public class CategoriaController {
     }
 
     /*POST*/
-
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PostMapping
-    public ResponseEntity<Categoria> insert(@RequestBody @Valid CategoriaDTO objDto) {
+    public ResponseEntity<Categoria> insert(@Valid @RequestBody CategoriaDTO objDto) {
         Categoria obj = service.save(objDto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(obj.getId()).toUri();
@@ -57,7 +58,7 @@ public class CategoriaController {
     }
 
     /*PUT*/
-
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<Categoria> update(@Valid @RequestBody CategoriaDTO categoriaDTO ,@PathVariable Integer id){
        Categoria obj = service.update(id, categoriaDTO);
@@ -65,7 +66,7 @@ public class CategoriaController {
     }
 
     /*DELETE*/
-
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Categoria> delete(@PathVariable Integer id){
         service.delete(id);

@@ -1,5 +1,6 @@
 package com.victorlucas.cursomc.domain;
 
+import com.victorlucas.cursomc.dto.CategoriaDTO;
 import lombok.*;
 
 import javax.persistence.*;
@@ -32,5 +33,10 @@ public class Categoria implements Serializable {
     }
 
     public Categoria(Integer id, String nome) {
+    }
+
+    public Categoria(CategoriaDTO dto){
+        this.id = dto.getId();
+        this.nome = dto.getNome();
     }
 }

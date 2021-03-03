@@ -46,7 +46,7 @@ public class CategoriaService {
     /*POST*/
 
     public Categoria save(CategoriaDTO dto){
-        Categoria categoria = new Categoria(null,dto.getNome());
+        Categoria categoria = new Categoria(dto);
         Categoria body = repository.save(categoria);
         return body;
     }

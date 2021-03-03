@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -32,12 +33,14 @@ public class ClienteController {
         return ResponseEntity.ok().body(dtos);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> findById(@PathVariable Integer id){
         Cliente clienteSelect =  clienteService.findById(id);
         return ResponseEntity.ok().body(clienteSelect);
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping("/page")
     public ResponseEntity<Page<Cliente>> findByPage(
             @RequestParam(value = "page", defaultValue = "0") Integer page,
@@ -64,6 +67,7 @@ public class ClienteController {
     }
 
     /*DELETE*/
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Integer id){
         clienteService.delete(id);
