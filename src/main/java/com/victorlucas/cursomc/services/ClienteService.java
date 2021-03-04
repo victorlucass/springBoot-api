@@ -3,13 +3,16 @@ package com.victorlucas.cursomc.services;
 import com.victorlucas.cursomc.domain.Cidade;
 import com.victorlucas.cursomc.domain.Cliente;
 import com.victorlucas.cursomc.domain.Endereco;
+import com.victorlucas.cursomc.domain.enums.Perfil;
 import com.victorlucas.cursomc.domain.enums.TipoCliente;
 import com.victorlucas.cursomc.dto.ClienteDTO;
 import com.victorlucas.cursomc.dto.ClienteNewDTO;
+import com.victorlucas.cursomc.exceptions.AuthorizationExpection;
 import com.victorlucas.cursomc.exceptions.DataIntegrityException;
 import com.victorlucas.cursomc.exceptions.ObjectNotFoundException;
 import com.victorlucas.cursomc.repositories.ClienteRepository;
 import com.victorlucas.cursomc.repositories.EnderecoRepository;
+import com.victorlucas.cursomc.security.UserSpringSecurity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
@@ -40,6 +43,13 @@ public class ClienteService {
     }
 
     public Cliente findById (Integer id){
+
+        UserSpringSecurity user = UserService.authenticated();
+
+        if(user == null || (!user.hasRole(Perfil.ADMIN) && !id.equals(user.getId()))){
+            throw new AuthorizationExpection("Acesso negado!");
+        }
+
         Optional<Cliente> clienteSelect = clienteRepository.findById(id);
         return clienteSelect.orElseThrow(
                 () -> new ObjectNotFoundException("Cliente com o id: " + id +" do tipo "+Cliente.class.getName()+" não existe, ou não encontrado.")

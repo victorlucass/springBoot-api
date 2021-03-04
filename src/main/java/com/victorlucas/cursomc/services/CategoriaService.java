@@ -10,6 +10,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,7 +24,7 @@ public class CategoriaService {
     private CategoriaRepository repository;
 
     /*GET*/
-
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public List<CategoriaDTO> findAll(){
         List<Categoria> lista = repository.findAll();
         List<CategoriaDTO> listDTO = lista.stream().map(obj -> new CategoriaDTO(obj)).collect(Collectors.toList());
@@ -38,13 +39,13 @@ public class CategoriaService {
     //para user o findById ele precisa ser do tipo Optional<tipo>
     //Ao retorna ele precisa do orElse() esse cara vai realizar oq está dentro caso seja nulo.
 
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public Page<Categoria> findPage(Integer page, Integer linesPerPage, String direction, String orderBy){
         PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(direction), orderBy);
         return repository.findAll(pageRequest);
     }
 
     /*POST*/
-
     public Categoria save(CategoriaDTO dto){
         Categoria categoria = new Categoria(dto);
         Categoria body = repository.save(categoria);
@@ -52,8 +53,6 @@ public class CategoriaService {
     }
 
     /*PUT*/
-
-
     public Categoria update(Integer id, CategoriaDTO categoriaDTO){
         Categoria obj = findById(id);
         put(categoriaDTO, obj);
@@ -62,7 +61,7 @@ public class CategoriaService {
     }
 
     /*DELETE*/
-
+    @PreAuthorize("hasAnyRole('ADMIN')")
     public void delete(Integer id) {
         findById(id); //Vai verificar se tem id...
         try{

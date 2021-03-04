@@ -25,7 +25,7 @@ public class ClienteController {
     private ClienteService clienteService;
 
     /*GET*/
-
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @GetMapping
     public ResponseEntity<List<ClienteDTO>> findAll(){
         List<Cliente> clientes = clienteService.findAll();
@@ -33,7 +33,7 @@ public class ClienteController {
         return ResponseEntity.ok().body(dtos);
     }
 
-    @PreAuthorize("hasAnyRole('ADMIN')")
+
     @GetMapping("/{id}")
     public ResponseEntity<Cliente> findById(@PathVariable Integer id){
         Cliente clienteSelect =  clienteService.findById(id);

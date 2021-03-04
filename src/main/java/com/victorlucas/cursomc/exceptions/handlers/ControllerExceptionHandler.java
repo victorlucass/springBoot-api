@@ -1,5 +1,6 @@
 package com.victorlucas.cursomc.exceptions.handlers;
 
+import com.victorlucas.cursomc.exceptions.AuthorizationExpection;
 import com.victorlucas.cursomc.exceptions.DataIntegrityException;
 import com.victorlucas.cursomc.exceptions.ObjectNotFoundException;
 import com.victorlucas.cursomc.exceptions.handlers.auxiliar.StandardError;
@@ -44,4 +45,14 @@ public class ControllerExceptionHandler {
         }
         return ResponseEntity.badRequest().body(error);
     }
+
+    @ExceptionHandler(AuthorizationExpection.class)
+    public ResponseEntity<StandardError> authorization(AuthorizationExpection ex, HttpServletRequest request){
+        StandardError error = new StandardError(
+                HttpStatus.FORBIDDEN.value(),
+                ex.getMessage(),
+                System.currentTimeMillis());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(error);
+    }
+
 }
