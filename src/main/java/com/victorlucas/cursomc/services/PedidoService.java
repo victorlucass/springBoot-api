@@ -1,15 +1,21 @@
 package com.victorlucas.cursomc.services;
 
+import com.victorlucas.cursomc.domain.Cliente;
 import com.victorlucas.cursomc.domain.Pedido;
 import com.victorlucas.cursomc.domain.enums.EstadoPagamento;
 import com.victorlucas.cursomc.domain.itemPedido.ItemPedido;
 import com.victorlucas.cursomc.domain.pagamentos.PagamentoComBoleto;
+import com.victorlucas.cursomc.exceptions.AuthorizationExpection;
 import com.victorlucas.cursomc.exceptions.ObjectNotFoundException;
 import com.victorlucas.cursomc.repositories.ItemPedidoRepository;
 import com.victorlucas.cursomc.repositories.PagamentoRepository;
 import com.victorlucas.cursomc.repositories.PedidoRepository;
+import com.victorlucas.cursomc.security.UserSpringSecurity;
 import com.victorlucas.cursomc.services.email.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,4 +77,15 @@ public class PedidoService {
         emailService.sendOrderConfirmationHtmlEmail(pedido);
         return pedido;
     }
+
+    public Page<Pedido> findPage(Integer page, Integer linesPerPage, String orderBy, String direction){
+        UserSpringSecurity user = UserService.authenticated();
+        if (user == null){
+            throw new AuthorizationExpection("Acesso negado!");
+        }
+        PageRequest pageRequest = PageRequest.of(page, linesPerPage, Sort.Direction.valueOf(orderBy), direction);
+        Cliente cliente = clienteService.findById(user.getId());
+        return pedidoRepository.findByCliente(cliente, pageRequest);
+    }
+
 }
