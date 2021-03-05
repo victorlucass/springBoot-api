@@ -1,5 +1,7 @@
 package com.victorlucas.cursomc.services.email;
 
+import com.mysql.cj.xdevapi.Client;
+import com.victorlucas.cursomc.domain.Cliente;
 import com.victorlucas.cursomc.domain.Pedido;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -66,5 +68,22 @@ public abstract class AbstractEmailService implements EmailService {
         mmh.setSentDate(new Date(System.currentTimeMillis()));
         mmh.setText(htmlFromTemplatePedido(pedido), true);
         return mimeMessage;
+    }
+
+    @Override
+    public void sendNewPasswordEmail(Cliente cliente, String newPassword) {
+        SimpleMailMessage sm = prepareNewPasswordEmail(cliente, newPassword);
+        sendEmail(sm);
+    }
+
+    protected SimpleMailMessage prepareNewPasswordEmail(Cliente cliente, String newPassword){
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(cliente.getEmail());//Pra quem vai enviar?
+        message.setFrom(send);//Quem vai enviar?
+        message.setSubject("Solicitação de nova senha");//Qual o assunto?
+        message.setSentDate(new Date(System.currentTimeMillis()));//Qual o momento do envio?
+        message.setText("Nova senha: " + newPassword);//O corpo do pedido.
+        return message;
+
     }
 }
