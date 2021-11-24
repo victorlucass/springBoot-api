@@ -1,6 +1,5 @@
-# iBuy-backend
-## Sobre o Projeto
-iBuy é um projeto fictício para afins de estudos e prática. Esse repositório será a implementação backend do projeto. 
+## Sobre o repositório:
+Este é um projeto fictício para afins de estudos e prática. Esse repositório será a implementação backend do projeto. 
 Esse projeto teve como base o [curso](https://www.udemy.com/course/spring-boot-ionic/) do professor [Nélio Alves](https://github.com/acenelio) pela plataforma Udemy.
 ## Tecnologias utilizadas
 ### Back end
@@ -20,7 +19,7 @@ Esse projeto teve como base o [curso](https://www.udemy.com/course/spring-boot-i
 
 ```bash
 # clonar repositório
-git clone https://github.com/victorlucass/iBuy-backend
+git clone https://github.com/victorlucass/springBoot-api
 
 # abrir projeto backend na IDE ou via terminal.
 ./mvnw spring-boot:run
